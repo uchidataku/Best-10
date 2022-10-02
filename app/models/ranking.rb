@@ -3,6 +3,8 @@
 class Ranking < ApplicationRecord
   belongs_to :creator, class_name: 'Account'
 
+  has_many :items
+
   module Genre
     UNSPECIFIED = 'unspecified'
     ENTERTAINMENT = 'entertainment' # エンタメ・趣味

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_144022) do
+ActiveRecord::Schema.define(version: 2022_10_02_150739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(version: 2022_10_02_144022) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["username"], name: "index_accounts_on_username", unique: true
+  end
+
+  create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "項目", force: :cascade do |t|
+    t.string "name", null: false, comment: "項目名"
+    t.uuid "ranking_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name", "ranking_id"], name: "index_items_on_name_and_ranking_id", unique: true
+    t.index ["ranking_id"], name: "index_items_on_ranking_id"
   end
 
   create_table "jtis", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "JWTのホワイトリスト", force: :cascade do |t|
@@ -40,5 +49,6 @@ ActiveRecord::Schema.define(version: 2022_10_02_144022) do
     t.index ["title"], name: "index_rankings_on_title", unique: true
   end
 
+  add_foreign_key "items", "rankings", on_delete: :cascade
   add_foreign_key "rankings", "accounts", column: "creator_id", on_delete: :cascade
 end
