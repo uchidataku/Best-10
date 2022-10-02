@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_142757) do
+ActiveRecord::Schema.define(version: 2022_10_02_144022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,4 +30,15 @@ ActiveRecord::Schema.define(version: 2022_10_02_142757) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "rankings", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "ランキング", force: :cascade do |t|
+    t.string "title", null: false, comment: "タイトル"
+    t.integer "genre", default: 0, null: false, comment: "ジャンル"
+    t.uuid "creator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_rankings_on_creator_id"
+    t.index ["title"], name: "index_rankings_on_title", unique: true
+  end
+
+  add_foreign_key "rankings", "accounts", column: "creator_id", on_delete: :cascade
 end
