@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_150739) do
+ActiveRecord::Schema.define(version: 2022_10_02_151820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(version: 2022_10_02_150739) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "いいね", force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id", "item_id"], name: "index_likes_on_account_id_and_item_id", unique: true
+    t.index ["account_id"], name: "index_likes_on_account_id"
+    t.index ["item_id"], name: "index_likes_on_item_id"
+  end
+
   create_table "rankings", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "ランキング", force: :cascade do |t|
     t.string "title", null: false, comment: "タイトル"
     t.integer "genre", default: 0, null: false, comment: "ジャンル"
@@ -50,5 +60,7 @@ ActiveRecord::Schema.define(version: 2022_10_02_150739) do
   end
 
   add_foreign_key "items", "rankings", on_delete: :cascade
+  add_foreign_key "likes", "accounts", on_delete: :cascade
+  add_foreign_key "likes", "items", on_delete: :cascade
   add_foreign_key "rankings", "accounts", column: "creator_id", on_delete: :cascade
 end
