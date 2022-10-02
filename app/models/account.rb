@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # Account
 class Account < ApplicationRecord
+  include JWT::Authenticatable
+
   has_secure_password
 
   validates :username, uniqueness: true
