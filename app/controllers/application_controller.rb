@@ -2,6 +2,7 @@
 # ApplicationController
 class ApplicationController < ActionController::API
   include ExceptionHandler
+  include EnvelopeRenderer
 
   before_action :authenticate_account!
 
