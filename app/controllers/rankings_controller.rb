@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# RankingsController
 class RankingsController < ApplicationController
   def index
     @rankings = Ranking.all
@@ -6,7 +7,7 @@ class RankingsController < ApplicationController
   end
 
   def show
-    @ranking = Ranking.find_by!(id: params[:id])
+    @ranking = Ranking.find(params[:id])
     render json: @ranking
   end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# ItemsController
 class ItemsController < ApplicationController
   def create
     @item = Item.create!(resource_params.merge(ranking_id: params[:ranking_id]))

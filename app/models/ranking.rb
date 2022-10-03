@@ -46,7 +46,7 @@ class Ranking < ApplicationRecord
     business: 150,
     it: 160,
     travel: 170,
-    education: 180,
+    education: 180
   }
 
   validates :title, presence: true, uniqueness: true

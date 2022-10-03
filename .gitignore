@@ -18,3 +18,7 @@
 # master key Multi envに対応
 /config/**/*.key
 /config/master.key
+
+/config/credentials/development.key
+
+/config/credentials/production.key
