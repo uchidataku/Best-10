@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # Ranking
 class Ranking < ApplicationRecord
+  before_create :set_suffix_title
+
   belongs_to :creator, class_name: 'Account'
 
   has_many :items
@@ -50,4 +52,10 @@ class Ranking < ApplicationRecord
   }
 
   validates :title, presence: true, uniqueness: true
+
+  private
+
+  def set_suffix_title
+    self.title = title + ' Best-10'
+  end
 end

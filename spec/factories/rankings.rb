@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 FactoryBot.define do
   factory :ranking do
-    sequence(:title) { |n| "好きな漫画_#{n} Best-10" }
+    sequence(:title) { |n| "好きな漫画_#{n}" }
     genre { Ranking::Genre::ENTERTAINMENT }
 
     association :creator, factory: :account
