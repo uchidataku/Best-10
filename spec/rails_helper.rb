@@ -24,6 +24,9 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ActiveJob::TestHelper
 
+  config.include Committee::Rails::Test::Methods
+  config.add_setting :committee_options
+
   config.before(:suite) do
     DatabaseCleaner.clean_with :truncation
     Rails.application.load_seed

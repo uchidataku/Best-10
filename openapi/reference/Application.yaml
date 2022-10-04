@@ -1,0 +1,41 @@
+openapi: 3.0.0
+x-stoplight:
+  id: ozmyara7xvfdc
+info:
+  title: Spec
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /rankings:
+    get:
+      summary: Ranking一覧を取得する
+      tags: []
+      operationId: get-rankings
+      responses:
+        '200':
+          $ref: '#/components/responses/Rankings'
+components:
+  schemas: {}
+  responses:
+    Rankings:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              rankings:
+                type: array
+                items:
+                  allOf:
+                    - $ref: ../models/Ranking.yaml
+                    - type: object
+                      properties:
+                        creator:
+                          $ref: ../models/Account.yaml
+                        items:
+                          type: array
+                          items:
+                            $ref: ../models/Item.yaml
+          examples: {}

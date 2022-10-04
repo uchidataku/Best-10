@@ -1,0 +1,16 @@
+title: Account
+type: object
+properties:
+  id:
+    type: string
+  created_at:
+    type: string
+  updated_at:
+    type: string
+  username:
+    type: string
+required:
+  - id
+  - created_at
+  - updated_at
+  - username

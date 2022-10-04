@@ -5,6 +5,10 @@ RSpec.describe RankingsController, type: :request do
   let(:account) { create(:account) }
   let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
 
+  def committee_options
+    @committee_options ||= { schema_path: Rails.root.join('openapi', 'Spec.yml').to_s }
+  end
+
   describe 'GET /rankings' do
     subject(:request) { get rankings_path, headers: headers }
     let!(:rankings) { create_list(:ranking, 3) }
@@ -14,6 +18,11 @@ RSpec.describe RankingsController, type: :request do
       expect(response).to have_http_status(:ok)
       parsed_body = JSON.parse(response.body)
       expect(parsed_body['rankings'].count).to eq 3
+    end
+
+    it 'ok' do
+      request
+      assert_response_schema_confirm(200)
     end
   end
 

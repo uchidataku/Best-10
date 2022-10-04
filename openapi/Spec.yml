@@ -1,0 +1,92 @@
+openapi: 3.0.0
+x-stoplight:
+  id: ozmyara7xvfdc
+info:
+  title: Spec
+  version: '1.0'
+servers:
+  - url: http://localhost:3000
+paths:
+  /rankings:
+    get:
+      summary: Ranking一覧を取得する
+      tags: []
+      operationId: get-rankings
+      responses:
+        '200':
+          $ref: '#/components/responses/Rankings'
+components:
+  schemas: {}
+  responses:
+    Rankings:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              rankings:
+                type: array
+                items:
+                  allOf:
+                    - title: Ranking
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        title:
+                          type: string
+                        genre:
+                          type: string
+                        hoge:
+                          type: string
+                      required:
+                        - id
+                        - created_at
+                        - updated_at
+                        - title
+                        - genre
+                        - hoge
+                    - type: object
+                      properties:
+                        creator:
+                          title: Account
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            created_at:
+                              type: string
+                            updated_at:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - id
+                            - created_at
+                            - updated_at
+                            - username
+                        items:
+                          type: array
+                          items:
+                            title: Item
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                              name:
+                                type: string
+                            required:
+                              - id
+                              - created_at
+                              - updated_at
+                              - name
+          examples: {}
