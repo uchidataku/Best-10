@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # RankingsController
 class RankingsController < ApplicationController
+  skip_before_action :authenticate_account!, except: :create
+
   def index
     @rankings = Ranking.all
     render json: @rankings
