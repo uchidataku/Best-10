@@ -11,12 +11,9 @@ properties:
     type: string
   genre:
     type: string
-  hoge:
-    type: string
 required:
   - id
   - created_at
   - updated_at
   - title
   - genre
-  - hoge

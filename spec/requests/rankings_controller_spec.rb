@@ -20,9 +20,9 @@ RSpec.describe RankingsController, type: :request do
       expect(parsed_body['rankings'].count).to eq 3
     end
 
-    it 'ok' do
+    it 'Response OK' do
       request
-      assert_response_schema_confirm(200)
+      assert_response_schema_confirm
     end
   end
 
@@ -33,6 +33,11 @@ RSpec.describe RankingsController, type: :request do
     it 'Rankingを作成できる' do
       expect { request }.to change(Ranking, :count).by(+1)
       expect(response).to have_http_status(:created)
+    end
+
+    it 'Response OK' do
+      request
+      assert_response_schema_confirm
     end
   end
 
@@ -46,6 +51,11 @@ RSpec.describe RankingsController, type: :request do
       expect(response).to have_http_status(:ok)
       parsed_body = JSON.parse(response.body)
       expect(parsed_body['id']).to eq ranking.id
+    end
+
+    it 'Response OK' do
+      request
+      assert_response_schema_confirm
     end
   end
 end

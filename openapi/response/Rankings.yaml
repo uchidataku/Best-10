@@ -1,0 +1,15 @@
+type: object
+properties:
+  rankings:
+    type: array
+    items:
+      allOf:
+        - $ref: ../schema/Ranking.yaml
+        - type: object
+          properties:
+            creator:
+              $ref: ../schema/Account.yaml
+            items:
+              type: array
+              items:
+                $ref: ../schema/Item.yaml

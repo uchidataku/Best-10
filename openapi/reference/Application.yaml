@@ -1,6 +1,4 @@
 openapi: 3.0.0
-x-stoplight:
-  id: ozmyara7xvfdc
 info:
   title: Spec
   version: '1.0'
@@ -15,27 +13,51 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Rankings'
+    post:
+      summary: Rankingを作成する
+      operationId: post-rankings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ranking:
+                  type: object
+                  required:
+                    - title
+                    - genre
+                  properties:
+                    title:
+                      type: string
+                    genre:
+                      type: string
+              required:
+                - ranking
+      responses:
+        '201':
+          $ref: '#/components/responses/Ranking'
+  '/rankings/{:id}':
+    get:
+      summary: Rankingを取得する
+      tags: []
+      operationId: get-ranking
+      responses:
+        '200':
+          $ref: '#/components/responses/Ranking'
+      description: ''
 components:
   schemas: {}
   responses:
+    Ranking:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: ../response/Ranking.yaml
     Rankings:
       description: ''
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              rankings:
-                type: array
-                items:
-                  allOf:
-                    - $ref: ../models/Ranking.yaml
-                    - type: object
-                      properties:
-                        creator:
-                          $ref: ../models/Account.yaml
-                        items:
-                          type: array
-                          items:
-                            $ref: ../models/Item.yaml
-          examples: {}
+            $ref: ../response/Rankings.yaml
