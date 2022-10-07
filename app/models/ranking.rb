@@ -56,6 +56,6 @@ class Ranking < ApplicationRecord
   private
 
   def set_suffix_title
-    self.title = title + ' Best-10'
+    self.title = "#{title} Best-10"
   end
 end
