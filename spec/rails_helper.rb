@@ -26,6 +26,11 @@ RSpec.configure do |config|
 
   config.include Committee::Rails::Test::Methods
   config.add_setting :committee_options
+  config.committee_options = {
+    schema_path: Rails.root.join('openapi', 'Spec.yml').to_s,
+    query_hash_key: 'rack.request.query_hash',
+    parse_response_by_content_type: false
+  }
 
   config.before(:suite) do
     DatabaseCleaner.clean_with :truncation
