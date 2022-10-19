@@ -3,7 +3,7 @@ info:
   title: Spec
   version: '1.0'
 servers:
-  - url: 'http://localhost:3000'
+  - url: http://localhost:3000
 paths:
   /rankings:
     get:
@@ -37,7 +37,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Ranking'
-  '/rankings/{:id}':
+  /rankings/{:id}:
     get:
       summary: Rankingを取得する
       tags: []
@@ -68,12 +68,17 @@ components:
                     type: string
                   genre:
                     type: string
+                  hoge:
+                    type:
+                      - string
+                      - 'null'
                 required:
                   - id
                   - created_at
                   - updated_at
                   - title
                   - genre
+                  - hoge
               - type: object
                 properties:
                   creator:
@@ -136,12 +141,17 @@ components:
                           type: string
                         genre:
                           type: string
+                        hoge:
+                          type:
+                            - string
+                            - 'null'
                       required:
                         - id
                         - created_at
                         - updated_at
                         - title
                         - genre
+                        - hoge
                     - type: object
                       properties:
                         creator:

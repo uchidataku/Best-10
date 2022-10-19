@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "openapi bundle --output build/Application --ext json openapi/reference/Application.yaml"
+  },
+  "devDependencies": {
+    "@redocly/openapi-cli": "^1.0.0-beta.94"
+  }
+}

@@ -54,7 +54,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../response/Ranking.yaml
+            $ref: ../response/RankingRes.yaml
     Rankings:
       description: ''
       content:
