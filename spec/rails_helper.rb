@@ -15,6 +15,11 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+schema_json = `curl 'https://uchidataku.github.io/Best-10/Application.json'`
+json_file = File.open('tmp/schema.json', 'w')
+json_file.write(schema_json)
+json_file.close
+
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
@@ -27,7 +32,7 @@ RSpec.configure do |config|
   config.include Committee::Rails::Test::Methods
   config.add_setting :committee_options
   config.committee_options = {
-    schema_path: Rails.root.join('openapi', 'Spec.yml').to_s,
+    schema: Committee::Drivers::load_from_file('tmp/schema.json'),
     query_hash_key: 'rack.request.query_hash',
     parse_response_by_content_type: false
   }
