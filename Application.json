@@ -100,7 +100,8 @@
               "string",
               "null"
             ]
-          }
+          },
+          "nullable": true
         },
         "required": [
           "id",
