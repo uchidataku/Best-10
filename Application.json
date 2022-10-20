@@ -99,9 +99,9 @@
             "type": [
               "string",
               "null"
-            ]
-          },
-          "nullable": true
+            ],
+            "nullable": true
+          }
         },
         "required": [
           "id",
