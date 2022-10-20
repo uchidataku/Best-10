@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.include Committee::Rails::Test::Methods
   config.add_setting :committee_options
   config.committee_options = {
-    schema: Committee::Drivers::load_from_file('tmp/schema.json'),
+    schema: Committee::Drivers.load_from_file('tmp/schema.json'),
     query_hash_key: 'rack.request.query_hash',
     parse_response_by_content_type: false
   }
