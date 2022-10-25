@@ -3,16 +3,18 @@ allOf:
   - type: object
     properties:
       hoge:
-        anyOf:
+        oneOf:
           - $ref: ../schema/Hoge.yaml
           - type: 'null'
-            properties: {}
       creator:
         $ref: ../schema/Account.yaml
       items:
-        type: array
-        items:
-          $ref: ../schema/Item.yaml
+        anyOf:
+          - type: array
+            items:
+              $ref: ../schema/Item.yaml
+          - type: 'null'
+            properties: {}
     required:
       - hoge
       - creator
