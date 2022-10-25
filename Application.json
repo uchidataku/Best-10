@@ -125,13 +125,6 @@
           },
           "genre": {
             "type": "string"
-          },
-          "hogehoge": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "nullable": true
           }
         },
         "required": [
@@ -139,8 +132,7 @@
           "created_at",
           "updated_at",
           "title",
-          "genre",
-          "hogehoge"
+          "genre"
         ]
       },
       "Account": {
@@ -227,30 +219,6 @@
           "rankings"
         ]
       },
-      "Hoge": {
-        "title": "Hoge",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "fuga": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "fuga"
-        ]
-      },
       "RankingRes": {
         "allOf": [
           {
@@ -259,17 +227,6 @@
           {
             "type": "object",
             "properties": {
-              "hoge": {
-                "anyOf": [
-                  {
-                    "$ref": "#/components/schemas/Hoge"
-                  },
-                  {
-                    "nullable": true,
-                    "properties": {}
-                  }
-                ]
-              },
               "creator": {
                 "$ref": "#/components/schemas/Account"
               },
@@ -299,12 +256,23 @@
               "rankings": {
                 "type": "array",
                 "items": {
-                  "anyOf": [
+                  "allOf": [
                     {
                       "$ref": "#/components/schemas/Ranking"
                     },
                     {
-                      "nullable": true
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Item"
+                          }
+                        }
+                      },
+                      "required": [
+                        "items"
+                      ]
                     }
                   ]
                 }
