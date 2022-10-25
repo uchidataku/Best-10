@@ -9,4 +9,6 @@ Rails.application.routes.draw do
       resources :likes, only: :create
     end
   end
+  
+  resources :accounts, only: :show
 end

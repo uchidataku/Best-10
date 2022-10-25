@@ -38,6 +38,12 @@ paths:
         '201':
           $ref: '#/components/responses/Ranking'
   '/rankings/{:id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     get:
       summary: Rankingを取得する
       tags: []
@@ -46,6 +52,19 @@ paths:
         '200':
           $ref: '#/components/responses/Ranking'
       description: ''
+  '/accounts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Accountを取得する
+      responses:
+        '200':
+          $ref: '#/components/responses/Account'
+      operationId: get-accounts-id
 components:
   schemas: {}
   responses:
@@ -60,4 +79,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../response/Rankings.yaml
+            $ref: ../response/RankingsRes.yaml
+    Account:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: ../response/AccountRes.yaml

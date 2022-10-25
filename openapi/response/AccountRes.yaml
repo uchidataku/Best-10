@@ -8,3 +8,5 @@ allOf:
           anyOf:
             - $ref: ../schema/Ranking.yaml
             - type: 'null'
+    required:
+      - rankings

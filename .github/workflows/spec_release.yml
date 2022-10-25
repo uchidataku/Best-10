@@ -13,7 +13,11 @@ jobs:
       - name: add nullable
         shell: bash
         run: |
-          for file in schema/*; do
+          for file in openapi/schema/*; do
+            sed -i -e "s/- 'null'/- 'null'\n    nullable: true/g" $file
+            sed -i -e "s/type: 'null'/nullable: true/g" $file
+          done
+          for file in openapi/response/*; do
             sed -i -e "s/- 'null'/- 'null'\n    nullable: true/g" $file
             sed -i -e "s/type: 'null'/nullable: true/g" $file
           done

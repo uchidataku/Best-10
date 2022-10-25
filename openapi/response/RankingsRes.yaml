@@ -13,3 +13,8 @@ properties:
               type: array
               items:
                 $ref: ../schema/Item.yaml
+          required:
+            - creator
+            - items
+required:
+  - rankings

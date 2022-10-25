@@ -13,3 +13,7 @@ allOf:
         type: array
         items:
           $ref: ../schema/Item.yaml
+    required:
+      - hoge
+      - creator
+      - items
