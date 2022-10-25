@@ -5,7 +5,7 @@ allOf:
       rankings:
         type: array
         items:
-          anyOf:
+          allOf:
             - $ref: ../schema/Ranking.yaml
             - type: object
               properties:
@@ -15,6 +15,5 @@ allOf:
                     $ref: ../schema/Item.yaml
               required:
                 - items
-            - type: 'null'
     required:
       - rankings

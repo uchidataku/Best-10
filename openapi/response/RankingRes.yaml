@@ -2,10 +2,6 @@ allOf:
   - $ref: ../schema/Ranking.yaml
   - type: object
     properties:
-      hoge:
-        oneOf:
-          - $ref: ../schema/Hoge.yaml
-          - type: 'null'
       creator:
         $ref: ../schema/Account.yaml
       items:
