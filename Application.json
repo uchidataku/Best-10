@@ -61,6 +61,16 @@
       }
     },
     "/rankings/{:id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
       "get": {
         "summary": "Rankingを取得する",
         "tags": [],
@@ -71,6 +81,27 @@
           }
         },
         "description": ""
+      }
+    },
+    "/accounts/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Accountを取得する",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Account"
+          }
+        },
+        "operationId": "get-accounts-id"
       }
     }
   },
@@ -95,7 +126,7 @@
           "genre": {
             "type": "string"
           },
-          "hoge": {
+          "hogehoge": {
             "type": [
               "string",
               "null"
@@ -109,7 +140,7 @@
           "updated_at",
           "title",
           "genre",
-          "hoge"
+          "hogehoge"
         ]
       },
       "Account": {
@@ -160,7 +191,7 @@
           "name"
         ]
       },
-      "Rankings": {
+      "RankingsRes": {
         "type": "object",
         "properties": {
           "rankings": {
@@ -182,12 +213,43 @@
                         "$ref": "#/components/schemas/Item"
                       }
                     }
-                  }
+                  },
+                  "required": [
+                    "creator",
+                    "items"
+                  ]
                 }
               ]
             }
           }
-        }
+        },
+        "required": [
+          "rankings"
+        ]
+      },
+      "Hoge": {
+        "title": "Hoge",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "fuga": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "fuga"
+        ]
       },
       "RankingRes": {
         "allOf": [
@@ -197,6 +259,17 @@
           {
             "type": "object",
             "properties": {
+              "hoge": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Hoge"
+                  },
+                  {
+                    "nullable": true,
+                    "properties": {}
+                  }
+                ]
+              },
               "creator": {
                 "$ref": "#/components/schemas/Account"
               },
@@ -206,7 +279,40 @@
                   "$ref": "#/components/schemas/Item"
                 }
               }
-            }
+            },
+            "required": [
+              "hoge",
+              "creator",
+              "items"
+            ]
+          }
+        ]
+      },
+      "AccountRes": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Account"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rankings": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Ranking"
+                    },
+                    {
+                      "nullable": true
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "rankings"
+            ]
           }
         ]
       }
@@ -227,7 +333,17 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/Rankings"
+              "$ref": "#/components/schemas/RankingsRes"
+            }
+          }
+        }
+      },
+      "Account": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AccountRes"
             }
           }
         }
