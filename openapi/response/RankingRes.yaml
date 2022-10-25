@@ -9,12 +9,9 @@ allOf:
       creator:
         $ref: ../schema/Account.yaml
       items:
-        anyOf:
-          - type: array
-            items:
-              $ref: ../schema/Item.yaml
-          - type: 'null'
-            properties: {}
+        type: array
+        items:
+          $ref: ../schema/Item.yaml
     required:
       - hoge
       - creator

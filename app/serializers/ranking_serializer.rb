@@ -3,6 +3,10 @@
 class RankingSerializer < BaseSerializer
   attributes :title, :genre
 
+  attribute :hogehoge do
+    nil
+  end
+  
   attribute :hoge do
     nil
   end

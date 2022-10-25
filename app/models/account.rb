@@ -5,7 +5,7 @@ class Account < ApplicationRecord
 
   has_secure_password
 
-  has_many :rankings
+  has_many :rankings, foreign_key: :creator_id, inverse_of: :creator
   has_many :likes
 
   validates :username, uniqueness: true, presence: true

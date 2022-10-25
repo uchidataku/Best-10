@@ -3,6 +3,6 @@
 class AccountsController < ApplicationController
   def show
     @account = Account.find(params[:id])
-    render json: @account
+    render json: @account, include: [rankings: :items]
   end
 end

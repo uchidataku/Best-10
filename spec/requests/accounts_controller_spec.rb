@@ -7,6 +7,7 @@ RSpec.describe AccountsController, type: :request do
 
   describe 'GET /accounts/:id' do
     subject(:request) { get account_path(account.id), headers: headers }
+    let!(:ranking) { create(:ranking, creator: account) }
 
     it 'Accountを取得できる' do
       request
