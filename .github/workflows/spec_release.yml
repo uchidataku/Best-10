@@ -13,9 +13,17 @@ jobs:
       - name: add nullable
         shell: bash
         run: |
-          for file in openapi/schema/*; do
+          for file in schema/*; do
             sed -i -e "s/- 'null'/- 'null'\n    nullable: true/g" $file
+            sed -i -e "s/type: 'null'/nullable: true/g" $file
           done
+#          for file in openapi/schema/*; do
+#            sed -i -e "s/- 'null'/nullable: true/g" $file
+#            sed -i -e "s/  nullable: true/nullable: true/g" $file
+#            sed -i -e "N;s/type:\n *- string/type: string/g" $file
+#            sed -i -e "N;s/type:\n *- number/type: number/g" $file
+#            sed -i -e "N;s/type:\n *- integer/type: integer/g" $file
+#          done
       - name: Build project
         run: |
           npm ci && npm run build

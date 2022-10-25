@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ../schema/Account.yaml
+  - type: object
+    properties:
+      rankings:
+        type: array
+        items:
+          anyOf:
+            - $ref: ../schema/Ranking.yaml
+            - type: 'null'

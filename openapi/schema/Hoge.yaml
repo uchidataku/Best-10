@@ -1,4 +1,4 @@
-title: Ranking
+title: Hoge
 type: object
 properties:
   id:
@@ -7,18 +7,10 @@ properties:
     type: string
   updated_at:
     type: string
-  title:
+  fuga:
     type: string
-  genre:
-    type: string
-  hogehoge:
-    type:
-      - string
-      - 'null'
 required:
   - id
   - created_at
   - updated_at
-  - title
-  - genre
-  - hogehoge
+  - fuga
