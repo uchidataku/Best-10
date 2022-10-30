@@ -14,6 +14,8 @@ class ApplicationController < ActionController::API
 
   def authenticate_account!
     @current_jwt = /Bearer (.*)/.match(request.headers[:Authorization]).to_a[1]
+    return if @current_jwt.blank?
+
     @current_account = Account.authenticate!(@current_jwt)
   end
 end
