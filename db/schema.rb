@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_151820) do
+ActiveRecord::Schema.define(version: 2022_10_30_054955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2022_10_02_151820) do
     t.uuid "ranking_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes_count", comment: "Likes数"
     t.index ["name", "ranking_id"], name: "index_items_on_name_and_ranking_id", unique: true
     t.index ["ranking_id"], name: "index_items_on_ranking_id"
   end
