@@ -5,12 +5,12 @@ class RankingsController < ApplicationController
 
   def index
     @rankings = Ranking.all
-    render json: @rankings
+    render json: @rankings, include: [:creator]
   end
 
   def show
     @ranking = Ranking.find(params[:id])
-    render json: @ranking
+    render json: @ranking, include: %i[creator items]
   end
 
   def create
