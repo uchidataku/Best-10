@@ -16,7 +16,7 @@ class AuthController < ApplicationController
     end
 
     @account = Account.create!(resource_params)
-    render json: @account, status: :created
+    render json: @account, status: :created, serializer: AccountWithTokenSerializer
   end
 
   private
