@@ -150,37 +150,17 @@
           },
           "username": {
             "type": "string"
+          },
+          "is_system_admin": {
+            "type": "boolean"
           }
         },
         "required": [
           "id",
           "created_at",
           "updated_at",
-          "username"
-        ]
-      },
-      "Item": {
-        "title": "Item",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "name"
+          "username",
+          "is_system_admin"
         ]
       },
       "RankingsRes": {
@@ -198,17 +178,10 @@
                   "properties": {
                     "creator": {
                       "$ref": "#/components/schemas/Account"
-                    },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Item"
-                      }
                     }
                   },
                   "required": [
-                    "creator",
-                    "items"
+                    "creator"
                   ]
                 }
               ]
@@ -217,6 +190,38 @@
         },
         "required": [
           "rankings"
+        ]
+      },
+      "Item": {
+        "title": "Item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "likes_count": {
+            "type": "integer"
+          },
+          "is_liked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name",
+          "likes_count",
+          "is_liked"
         ]
       },
       "RankingRes": {
@@ -238,7 +243,6 @@
               }
             },
             "required": [
-              "hoge",
               "creator",
               "items"
             ]
@@ -256,25 +260,7 @@
               "rankings": {
                 "type": "array",
                 "items": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Ranking"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "items": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Item"
-                          }
-                        }
-                      },
-                      "required": [
-                        "items"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Ranking"
                 }
               }
             },
