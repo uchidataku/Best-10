@@ -9,6 +9,5 @@ allOf:
         items:
           $ref: ../schema/Item.yaml
     required:
-      - hoge
       - creator
       - items

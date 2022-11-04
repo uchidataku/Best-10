@@ -24,9 +24,9 @@ ranking = Ranking.find_or_create_by!(
 )
 
 titles = %w[
-OnePiece 呪術廻戦 進撃の巨人 スラムダンク ハンターハンター
-キングダム ドラゴンボール チェンソーマン ナルト ヒカルの碁
-テニスの王子様 アイシールド21 SPYxFAMILY あひるの空 金色のガッシュ
+  OnePiece 呪術廻戦 進撃の巨人 スラムダンク ハンターハンター
+  キングダム ドラゴンボール チェンソーマン ナルト ヒカルの碁
+  テニスの王子様 アイシールド21 SPYxFAMILY あひるの空 金色のガッシュ
 ]
 
 likes = []
@@ -46,9 +46,9 @@ ranking = Ranking.find_or_create_by!(
 )
 
 titles = %w[
-BackToTheFuture アルマゲドン グレイテストショーマン E.T. ショーシャンクの空に
-インセプション マトリックス ロードオブザリング バイオハザード マンマミーア
-ジュマンジ ジュラシックパーク ターミネーター インディージョーンズ ベンジャミンバトン
+  BackToTheFuture アルマゲドン グレイテストショーマン E.T. ショーシャンクの空に
+  インセプション マトリックス ロードオブザリング バイオハザード マンマミーア
+  ジュマンジ ジュラシックパーク ターミネーター インディージョーンズ ベンジャミンバトン
 ]
 
 likes = []
@@ -68,9 +68,9 @@ ranking = Ranking.find_or_create_by!(
 )
 
 titles = %w[
-Ruby Rust Go Java C C# C++
-Perl PHP Python Swift Kotlin
-JavaScript TypeScript Dart Nim
+  Ruby Rust Go Java C C# C++
+  Perl PHP Python Swift Kotlin
+  JavaScript TypeScript Dart Nim
 ]
 
 likes = []

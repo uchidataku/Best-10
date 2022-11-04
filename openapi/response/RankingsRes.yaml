@@ -9,12 +9,7 @@ properties:
           properties:
             creator:
               $ref: ../schema/Account.yaml
-            items:
-              type: array
-              items:
-                $ref: ../schema/Item.yaml
           required:
             - creator
-            - items
 required:
   - rankings

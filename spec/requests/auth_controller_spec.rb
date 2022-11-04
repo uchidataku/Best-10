@@ -2,11 +2,8 @@
 require 'rails_helper'
 
 RSpec.describe AuthController, type: :request do
-  let(:account) { create(:account) }
-  let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
-
   describe 'POST /sign_in' do
-    subject(:request) { post sign_in_path, params: params, headers: headers }
+    subject(:request) { post sign_in_path, params: params }
     let!(:account) { create(:account, username: 'hoge') }
 
     context 'valid' do
@@ -36,7 +33,7 @@ RSpec.describe AuthController, type: :request do
   end
 
   describe 'POST /sign_up' do
-    subject(:request) { post sign_up_path, params: params, headers: headers }
+    subject(:request) { post sign_up_path, params: params }
     let(:params) { { account: { username: 'hogehoge', password: 'password' } } }
 
     context 'valid' do
@@ -59,6 +56,33 @@ RSpec.describe AuthController, type: :request do
       it 'エラー' do
         request
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe 'GET /current_user' do
+    subject(:request) { get current_user_path, headers: headers }
+    let!(:account) { create(:account) }
+
+    context 'jwtあり' do
+      let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
+
+      it 'current_accountを取得' do
+        request
+        expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['id']).to eq account.id
+      end
+    end
+
+    context 'jwtなし' do
+      let(:headers) { nil }
+
+      it 'エラー' do
+        request
+        expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body).to eq nil
       end
     end
   end

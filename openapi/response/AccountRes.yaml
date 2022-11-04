@@ -5,15 +5,6 @@ allOf:
       rankings:
         type: array
         items:
-          allOf:
-            - $ref: ../schema/Ranking.yaml
-            - type: object
-              properties:
-                items:
-                  type: array
-                  items:
-                    $ref: ../schema/Item.yaml
-              required:
-                - items
+          $ref: ../schema/Ranking.yaml
     required:
       - rankings

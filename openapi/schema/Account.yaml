@@ -9,8 +9,11 @@ properties:
     type: string
   username:
     type: string
+  is_system_admin:
+    type: boolean
 required:
   - id
   - created_at
   - updated_at
   - username
+  - is_system_admin

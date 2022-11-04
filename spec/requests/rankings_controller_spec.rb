@@ -7,13 +7,12 @@ RSpec.describe RankingsController, type: :request do
 
   describe 'GET /rankings' do
     subject(:request) { get rankings_path, headers: headers }
-    let!(:rankings) { create_list(:ranking, 3) }
 
     it 'Ranking一覧を取得できる' do
       request
       expect(response).to have_http_status(:ok)
       parsed_body = JSON.parse(response.body)
-      expect(parsed_body['rankings'].count).to eq 3
+      expect(parsed_body['rankings'].count).to eq 3 # seed分
     end
 
     it 'Response OK' do
