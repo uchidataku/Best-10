@@ -103,6 +103,87 @@
         },
         "operationId": "get-accounts-id"
       }
+    },
+    "/sign_in": {
+      "post": {
+        "summary": "サインインする",
+        "operationId": "post-sign_in",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/AccountWithToken"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "type": "object",
+                    "required": [
+                      "username",
+                      "password"
+                    ],
+                    "properties": {
+                      "username": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "account"
+                ]
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/sign_up": {
+      "post": {
+        "summary": "サインアップする",
+        "operationId": "post-sign_up",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/AccountWithToken"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "type": "object",
+                    "required": [
+                      "username",
+                      "password"
+                    ],
+                    "properties": {
+                      "username": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "account"
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -298,6 +379,28 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/AccountRes"
+            }
+          }
+        }
+      },
+      "AccountWithToken": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account": {
+                  "$ref": "#/components/schemas/AccountRes"
+                },
+                "token": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "account",
+                "token"
+              ]
             }
           }
         }
