@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # Item
 class Item < ApplicationRecord
-  belongs_to :ranking
+  belongs_to :ranking, counter_cache: true
 
   has_many :likes
 

@@ -82,6 +82,10 @@ titles.each do |title|
 end
 Like.import likes
 
+Ranking.all.each do |ranking|
+  Ranking.reset_counters(ranking.id, :items)
+end
+
 Item.all.each do |item|
   Item.reset_counters(item.id, :likes)
 end
