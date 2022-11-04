@@ -3,7 +3,9 @@
 class RankingsController < ApplicationController
   def index
     @rankings = Ranking.all
-    render json: @rankings, include: [:creator]
+    total_data_nums = @rankings.size
+    @rankings = @rankings.page(params[:page] ||= 1).per(Best10::Pagination::DEFAULT_LIMIT)
+    render json: @rankings, include: [:creator], meta: total_data_nums, meta_key: 'total_data_nums'
   end
 
   def show
