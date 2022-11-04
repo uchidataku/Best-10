@@ -24,4 +24,7 @@
 /config/credentials/production.key
 
 node_modules
-build
+
+## OpenAPI
+/openapi/build/*
+!/openapi/build/.keep
