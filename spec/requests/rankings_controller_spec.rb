@@ -6,18 +6,72 @@ RSpec.describe RankingsController, type: :request do
   let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
 
   describe 'GET /rankings' do
-    subject(:request) { get rankings_path, headers: headers }
+    subject(:request) { get rankings_path, headers: headers, params: params }
 
-    it 'Ranking一覧を取得できる' do
-      request
-      expect(response).to have_http_status(:ok)
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body['rankings'].count).to eq 3 # seed分
+    context 'paramsなし' do
+      let(:params) { nil }
+
+      it 'Ranking一覧を取得できる' do
+        request
+        expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['rankings'].count).to eq 3 # seed分
+      end
+
+      it 'Response OK' do
+        request
+        assert_response_schema_confirm(200)
+      end
     end
 
-    it 'Response OK' do
-      request
-      assert_response_schema_confirm(200)
+    context 'paramsあり' do
+      context 'keyword' do
+        let(:params) { { keyword: '漫画' } }
+
+        it '指定したRanking一覧を取得できる' do
+          request
+          expect(response).to have_http_status(:ok)
+          parsed_body = JSON.parse(response.body)
+          expect(parsed_body['rankings'].count).to eq 1
+        end
+      end
+
+      context 'genre' do
+        let(:params) { { genre: Ranking::Genre::IT } }
+
+        it '指定したRanking一覧を取得できる' do
+          request
+          expect(response).to have_http_status(:ok)
+          parsed_body = JSON.parse(response.body)
+          expect(parsed_body['rankings'].count).to eq 1
+        end
+      end
+
+      context 'sort_by_params' do
+        context 'popularity' do
+          let(:params) { { sort_by: Ranking::SortBy::POPULARITY } }
+          let(:first_ranking) { Ranking.order(items_count: :desc).first }
+
+          it '指定したRanking一覧を取得できる' do
+            request
+            expect(response).to have_http_status(:ok)
+            parsed_body = JSON.parse(response.body)
+            expect(parsed_body['rankings'][0]['id']).to eq first_ranking.id
+          end
+        end
+
+        context 'newest_to_oldest' do
+          let(:params) { { sort_by: Ranking::SortBy::NEWEST_TO_OLDEST } }
+          let(:first_ranking) { Ranking.order(created_at: :desc).first }
+
+          it '指定したRanking一覧を取得できる' do
+            request
+            expect(response).to have_http_status(:ok)
+            parsed_body = JSON.parse(response.body)
+            expect(parsed_body['rankings'][0]['id']).to eq first_ranking.id
+          end
+        end
+      end
     end
   end
 

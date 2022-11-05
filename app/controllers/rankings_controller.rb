@@ -3,6 +3,9 @@
 class RankingsController < ApplicationController
   def index
     @rankings = Ranking.all
+    @rankings = @rankings.with_keyword(params[:keyword]) if params[:keyword]
+    @rankings = @rankings.with_genre(params[:genre]) if params[:genre]
+    @rankings = @rankings.sort_by_params(params[:sort_by]) if params[:sort_by]
     total_data_nums = @rankings.size
     @rankings = @rankings.page(params[:page] ||= 1).per(Best10::Pagination::DEFAULT_LIMIT)
     render json: @rankings, include: [:creator], meta: total_data_nums, meta_key: 'total_data_nums'

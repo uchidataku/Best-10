@@ -3,8 +3,8 @@
 class Ranking < ApplicationRecord
   before_create :set_suffix_title
 
+  # Associations
   belongs_to :creator, class_name: 'Account'
-
   has_many :items, -> { order(likes_count: :desc) }, inverse_of: :ranking
 
   module Genre
@@ -29,6 +29,11 @@ class Ranking < ApplicationRecord
     EDUCATION = 'education' # 教育
   end
 
+  module SortBy
+    POPULARITY = 'popularity' # 人気順
+    NEWEST_TO_OLDEST = 'newest_to_oldest' # 新着順
+  end
+
   enum genre: {
     unspecified: 0,
     entertainment: 10,
@@ -51,7 +56,28 @@ class Ranking < ApplicationRecord
     education: 180
   }
 
+  # Validates
   validates :title, presence: true, uniqueness: true
+
+  # Scopes
+  scope :with_keyword, lambda { |keyword|
+    where('title ILIKE ?', "%#{keyword}%")
+  }
+
+  scope :with_genre, lambda { |genre|
+    where(genre: genre)
+  }
+
+  scope :sort_by_params, lambda { |sort_by|
+    case sort_by
+    when SortBy::POPULARITY
+      order(items_count: :desc)
+    when SortBy::NEWEST_TO_OLDEST
+      order(created_at: :desc)
+    else
+      fail ActionController::ParameterMissing, "sort_by: #{sort_by}"
+    end
+  }
 
   private
 

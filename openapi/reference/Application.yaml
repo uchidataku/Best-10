@@ -37,7 +37,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Ranking'
-  '/rankings/{:id}':
+  '/rankings/{id}':
     parameters:
       - schema:
           type: string
@@ -52,15 +52,51 @@ paths:
         '200':
           $ref: '#/components/responses/Ranking'
       description: ''
-  '/accounts/{id}':
+  '/rankings/{ranking_id}/items':
     parameters:
       - schema:
           type: string
-        name: id
+        name: ranking_id
         in: path
         required: true
+    post:
+      summary: RankingにItemを追加する
+      operationId: post-rankings-ranking_id-items
+      responses:
+        '201':
+          description: Created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+              required:
+                - item
+  '/items/{item_id}/likes':
+    parameters:
+      - schema:
+          type: string
+        name: item_id
+        in: path
+        required: true
+    post:
+      summary: いいねする
+      operationId: post-items-item_id-likes
+      responses:
+        '201':
+          description: Created
+  /current_user:
+    parameters: []
     get:
-      summary: Accountを取得する
+      summary: CurrentAccountを取得する
       responses:
         '200':
           $ref: '#/components/responses/Account'
