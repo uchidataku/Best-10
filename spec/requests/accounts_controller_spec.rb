@@ -5,8 +5,8 @@ RSpec.describe AccountsController, type: :request do
   let(:account) { create(:account) }
   let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
 
-  describe 'GET /accounts/:id' do
-    subject(:request) { get account_path(account.id), headers: headers }
+  describe 'GET /current_user' do
+    subject(:request) { get current_user_path, headers: headers }
     let!(:ranking) { create(:ranking, creator: account) }
 
     it 'Accountを取得できる' do
