@@ -5,7 +5,7 @@ class Ranking < ApplicationRecord
 
   # Associations
   belongs_to :creator, class_name: 'Account'
-  has_many :items, -> { order(likes_count: :desc) }, inverse_of: :ranking
+  has_many :items, -> { order('likes_count DESC NULLS LAST') }, inverse_of: :ranking
 
   module Genre
     UNSPECIFIED = 'unspecified'
