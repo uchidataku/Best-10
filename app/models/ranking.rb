@@ -71,7 +71,7 @@ class Ranking < ApplicationRecord
   scope :sort_by_params, lambda { |sort_by|
     case sort_by
     when SortBy::POPULARITY
-      order(items_count: :desc)
+      order('items_count DESC NULLS LAST')
     when SortBy::NEWEST_TO_OLDEST
       order(created_at: :desc)
     else
