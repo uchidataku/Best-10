@@ -7,6 +7,9 @@ RSpec.describe RankingsController, type: :request do
 
   describe 'GET /rankings' do
     subject(:request) { get rankings_path, headers: headers, params: params }
+    let!(:ranking_1) { create(:ranking, title: '好きな漫画', genre: Ranking::Genre::ENTERTAINMENT) }
+    let!(:ranking_2) { create(:ranking, title: 'おすすめ洋画', genre: Ranking::Genre::ENTERTAINMENT) }
+    let!(:ranking_3) { create(:ranking, title: '好きなプログラミング言語', genre: Ranking::Genre::IT) }
 
     context 'paramsなし' do
       let(:params) { nil }
@@ -15,7 +18,7 @@ RSpec.describe RankingsController, type: :request do
         request
         expect(response).to have_http_status(:ok)
         parsed_body = JSON.parse(response.body)
-        expect(parsed_body['rankings'].count).to eq 3 # seed分
+        expect(parsed_body['rankings'].count).to eq 3
       end
 
       it 'Response OK' do

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+return unless Rails.env.development?
+
 admin_account = Account.find_by(is_system_admin: true)
 
 ## 漫画
@@ -125,7 +127,7 @@ names = %w[
   久保田利伸 倉木麻衣 銀杏BOYZ 木村カエラ 加藤登紀子 小田和正 奥田民生 ウルフルズ
   いきものがかり ELLEGARDEN 絢香 安室奈美恵 19 ZARD Superfly Suchmos SPEED
   PUFFY Perfume MISIA GLAY globe GReeeeN EXILE DEEN Cocco CHEMISTRY B'z
-  AKB48 AI Ado 米津玄師 優里　ゆらゆら帝国 山下達郎 槙原敬之 ポルノグラフィティ 柴咲コウ
+  AKB48 AI Ado 米津玄師 優里 ゆらゆら帝国 山下達郎 槙原敬之 ポルノグラフィティ 柴咲コウ
 ]
 
 likes = []
@@ -179,8 +181,8 @@ end
 Item.import items
 
 ## reset counter
-Ranking.all.each do |ranking|
-  Ranking.reset_counters(ranking.id, :items)
+Ranking.all.each do |r|
+  Ranking.reset_counters(r.id, :items)
 end
 
 Item.all.each do |item|
