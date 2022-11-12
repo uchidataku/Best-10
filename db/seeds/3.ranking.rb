@@ -96,7 +96,6 @@ ranking = Ranking.find_or_create_by!(title: 'おすすめ私立大学', creator:
   RankingGenre.find_or_create_by!(ranking: ranking, genre: genre)
 end
 
-
 names = %w[
   慶應義塾大学 早稲田大学 上智大学 明治大学 中央大学 法政大学 青山学院大学 立教大学 学習院大学
   明治学院大学 成蹊大学 成城大学 立命館大学 関西学院大学 同志社大学 東京理科大学 東京女子大学
@@ -116,7 +115,6 @@ ranking = Ranking.find_or_create_by!(title: '絶対聴くべき邦楽アーテ�
 [Genre.find_by!(name: '邦楽'), Genre.find_by!(name: 'ロック'), Genre.find_by!(name: 'ポップス')].each do |genre|
   RankingGenre.find_or_create_by!(ranking: ranking, genre: genre)
 end
-
 
 names = %w[
   KingGnu Mr.Children 藤井風 東京事変 ケツメイシ 宇多田ヒカル あいみょん Vaundy

@@ -67,7 +67,7 @@ class Ranking < ApplicationRecord
   }
 
   scope :with_genre, lambda { |genre_id|
-    joins(:ranking_genres).where(ranking_genres: {genre_id: genre_id })
+    joins(:ranking_genres).where(ranking_genres: { genre_id: genre_id })
   }
 
   scope :sort_by_params, lambda { |sort_by|
