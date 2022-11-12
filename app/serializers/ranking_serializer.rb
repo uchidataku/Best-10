@@ -14,5 +14,6 @@ class RankingSerializer < BaseSerializer
   end
 
   belongs_to :creator
+  has_many :genres
   has_many :items
 end

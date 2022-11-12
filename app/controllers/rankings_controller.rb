@@ -24,6 +24,6 @@ class RankingsController < ApplicationController
   private
 
   def resource_params
-    params.require(:ranking).permit(:title, :genre)
+    params.require(:ranking).permit(:title, :genre_ids)
   end
 end
