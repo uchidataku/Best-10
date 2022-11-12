@@ -7,8 +7,10 @@ admin_account = Account.find_by(is_system_admin: true)
 ## 漫画
 ranking = Ranking.find_or_create_by!(
   title: '好きな漫画',
-  genre: Ranking::Genre::ENTERTAINMENT,
   creator: admin_account
+)
+RankingGenre.find_or_create_by!(
+  ranking: ranking, genre: Genre.find_by(name: '漫画')
 )
 
 names = %w[
@@ -27,10 +29,9 @@ end
 Like.import likes
 
 ## 映画
-ranking = Ranking.find_or_create_by!(
-  title: 'おすすめ洋画',
-  genre: Ranking::Genre::ENTERTAINMENT,
-  creator: admin_account
+ranking = Ranking.find_or_create_by!(title: 'おすすめ洋画', creator: admin_account)
+RankingGenre.find_or_create_by!(
+  ranking: ranking, genre: Genre.find_by(name: '映画')
 )
 
 names = %w[
@@ -49,10 +50,9 @@ end
 Like.import likes
 
 ## プログラミング言語
-ranking = Ranking.find_or_create_by!(
-  title: '好きなプログラミング言語',
-  genre: Ranking::Genre::IT,
-  creator: admin_account
+ranking = Ranking.find_or_create_by!(title: '好きなプログラミング言語', creator: admin_account)
+RankingGenre.find_or_create_by!(
+  ranking: ranking, genre: Genre.find_by(name: 'プログラミング')
 )
 
 names = %w[
@@ -71,10 +71,9 @@ end
 Like.import likes
 
 ## 動物
-ranking = Ranking.find_or_create_by!(
-  title: '好きな動物',
-  genre: Ranking::Genre::ANIMAL,
-  creator: admin_account
+ranking = Ranking.find_or_create_by!(title: '好きな動物', creator: admin_account)
+RankingGenre.find_or_create_by!(
+  ranking: ranking, genre: Genre.find_by(name: '動物全般')
 )
 
 names = %w[
@@ -92,11 +91,11 @@ end
 Like.import likes
 
 ## 大学
-ranking = Ranking.find_or_create_by!(
-  title: 'おすすめ私立大学',
-  genre: Ranking::Genre::EDUCATION,
-  creator: admin_account
-)
+ranking = Ranking.find_or_create_by!(title: 'おすすめ私立大学', creator: admin_account)
+[Genre.find_by!(name: '大学・大学院'), Genre.find_by!(name: '教育全般')].each do |genre|
+  RankingGenre.find_or_create_by!(ranking: ranking, genre: genre)
+end
+
 
 names = %w[
   慶應義塾大学 早稲田大学 上智大学 明治大学 中央大学 法政大学 青山学院大学 立教大学 学習院大学
@@ -113,11 +112,11 @@ end
 Like.import likes
 
 ## 邦楽
-ranking = Ranking.find_or_create_by!(
-  title: '絶対聴くべき邦楽アーティスト',
-  genre: Ranking::Genre::MUSIC,
-  creator: admin_account
-)
+ranking = Ranking.find_or_create_by!(title: '絶対聴くべき邦楽アーティスト', creator: admin_account)
+[Genre.find_by!(name: '邦楽'), Genre.find_by!(name: 'ロック'), Genre.find_by!(name: 'ポップス')].each do |genre|
+  RankingGenre.find_or_create_by!(ranking: ranking, genre: genre)
+end
+
 
 names = %w[
   KingGnu Mr.Children 藤井風 東京事変 ケツメイシ 宇多田ヒカル あいみょん Vaundy
@@ -140,10 +139,9 @@ end
 Like.import likes
 
 ## 料理
-ranking = Ranking.find_or_create_by!(
-  title: '自信のある手料理',
-  genre: Ranking::Genre::COOKING,
-  creator: admin_account
+ranking = Ranking.find_or_create_by!(title: '自信のある手料理', creator: admin_account)
+RankingGenre.find_or_create_by!(
+  ranking: ranking, genre: Genre.find_by(name: 'グルメ/料理全般')
 )
 
 names = %w[
@@ -165,7 +163,6 @@ rankings = []
 (1..100).each do |n|
   rankings << Ranking.new(
     title: "ダミー#{n}",
-    genre: Ranking::Genre::UNSPECIFIED,
     creator: admin_account
   )
 end
