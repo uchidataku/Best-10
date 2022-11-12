@@ -1,4 +1,4 @@
-title: Ranking
+title: Genre
 type: object
 properties:
   id:
@@ -7,10 +7,10 @@ properties:
     type: string
   updated_at:
     type: string
-  title:
+  name:
     type: string
 required:
   - id
   - created_at
   - updated_at
-  - title
+  - name

@@ -7,9 +7,15 @@ RSpec.describe RankingsController, type: :request do
 
   describe 'GET /rankings' do
     subject(:request) { get rankings_path, headers: headers, params: params }
-    let!(:ranking_1) { create(:ranking, title: '好きな漫画', genre: Ranking::Genre::ENTERTAINMENT) }
-    let!(:ranking_2) { create(:ranking, title: 'おすすめ洋画', genre: Ranking::Genre::ENTERTAINMENT) }
-    let!(:ranking_3) { create(:ranking, title: '好きなプログラミング言語', genre: Ranking::Genre::IT) }
+    let!(:ranking_1) { create(:ranking, title: '好きな漫画') }
+    let!(:ranking_2) { create(:ranking, title: 'おすすめ洋画') }
+    let!(:ranking_3) { create(:ranking, title: '好きなプログラミング言語') }
+    let(:manga) { Genre.find_by!(name: '漫画') }
+    let(:movie) { Genre.find_by!(name: '映画') }
+    let(:programming) { Genre.find_by!(name: 'プログラミング') }
+    let!(:ranking_genre_1) { create(:ranking_genre, ranking: ranking_1, genre: manga) }
+    let!(:ranking_genre_2) { create(:ranking_genre, ranking: ranking_2, genre: movie) }
+    let!(:ranking_genre_3) { create(:ranking_genre, ranking: ranking_3, genre: programming) }
 
     context 'paramsなし' do
       let(:params) { nil }
@@ -39,8 +45,8 @@ RSpec.describe RankingsController, type: :request do
         end
       end
 
-      context 'genre' do
-        let(:params) { { genre: Ranking::Genre::IT } }
+      context 'genre_ids' do
+        let(:params) { { genre_ids: [Genre.find_by!(name: '漫画').id] } }
 
         it '指定したRanking一覧を取得できる' do
           request
@@ -80,7 +86,7 @@ RSpec.describe RankingsController, type: :request do
 
   describe 'POST /rankings' do
     subject(:request) { post rankings_path, params: params, headers: headers }
-    let(:params) { { ranking: { title: '好きな映画', genre: Ranking::Genre::ENTERTAINMENT } } }
+    let(:params) { { ranking: { title: '好きな映画', genre_ids: [Genre.find_by!(name: '映画').id] } } }
 
     it 'Rankingを作成できる' do
       expect { request }.to change(Ranking, :count).by(+1)

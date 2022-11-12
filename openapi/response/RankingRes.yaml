@@ -8,6 +8,11 @@ allOf:
         type: array
         items:
           $ref: ../schema/Item.yaml
+      genres:
+        type: array
+          items:
+            $ref: ../schema/Genre.yaml
     required:
       - creator
       - items
+      - genres

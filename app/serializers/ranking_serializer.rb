@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # RankingSerializer
 class RankingSerializer < BaseSerializer
-  attributes :title, :genre, :items_count
+  attributes :title, :items_count
 
   def items_count
     return 0 if object.items_count.nil?

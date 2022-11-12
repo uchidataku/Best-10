@@ -9,7 +9,12 @@ properties:
           properties:
             creator:
               $ref: ../schema/Account.yaml
+            genres:
+              type: array
+                items:
+                  $ref: ../schema/Genre.yaml
           required:
             - creator
+            - genres
 required:
   - rankings
