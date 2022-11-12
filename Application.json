@@ -261,17 +261,13 @@
           },
           "title": {
             "type": "string"
-          },
-          "genre": {
-            "type": "string"
           }
         },
         "required": [
           "id",
           "created_at",
           "updated_at",
-          "title",
-          "genre"
+          "title"
         ]
       },
       "Account": {
@@ -302,6 +298,30 @@
           "is_system_admin"
         ]
       },
+      "Genre": {
+        "title": "Genre",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name"
+        ]
+      },
       "RankingsRes": {
         "type": "object",
         "properties": {
@@ -317,10 +337,17 @@
                   "properties": {
                     "creator": {
                       "$ref": "#/components/schemas/Account"
+                    },
+                    "genres": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Genre"
+                      }
                     }
                   },
                   "required": [
-                    "creator"
+                    "creator",
+                    "genres"
                   ]
                 }
               ]
@@ -379,11 +406,18 @@
                 "items": {
                   "$ref": "#/components/schemas/Item"
                 }
+              },
+              "genres": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Genre"
+                }
               }
             },
             "required": [
               "creator",
-              "items"
+              "items",
+              "genres"
             ]
           }
         ]
