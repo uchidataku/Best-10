@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   end
 
   resources :accounts, only: :show
+
+  resources :genre_categories, only: :index
 end
