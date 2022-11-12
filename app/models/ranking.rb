@@ -6,6 +6,8 @@ class Ranking < ApplicationRecord
   # Associations
   belongs_to :creator, class_name: 'Account'
   has_many :items, -> { order('likes_count DESC NULLS LAST') }, inverse_of: :ranking
+  has_many :ranking_genres
+  has_many :genres, through: :ranking_genres
 
   module Genre
     UNSPECIFIED = 'unspecified'
