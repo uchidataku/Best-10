@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_04_011020) do
+ActiveRecord::Schema.define(version: 2022_11_12_004140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(version: 2022_11_04_011020) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["username"], name: "index_accounts_on_username", unique: true
+  end
+
+  create_table "genre_categories", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "ジャンルカテゴリー", force: :cascade do |t|
+    t.string "name", null: false, comment: "カテゴリー名"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_genre_categories_on_name", unique: true
   end
 
   create_table "items", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "項目", force: :cascade do |t|
