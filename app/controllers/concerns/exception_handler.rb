@@ -18,10 +18,9 @@ module ExceptionHandler
       )
     end
 
-    rescue_from Errors::UnauthorizedError do
+    rescue_from Errors::UnauthorizedError do |e|
       json_response(
-        { errors: [{ description: 'ユーザーネームまたはパスワードが正しくありません', status: 401, error_code: nil }] },
-        :unauthorized
+        { errors: [{ description: e.message, status: 401, error_code: nil }] }, :unauthorized
       )
     end
 

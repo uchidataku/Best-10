@@ -5,7 +5,7 @@ class AuthController < ApplicationController
 
   def sign_in
     account = Account.find_by(username: resource_params[:username]).try(:authenticate, resource_params[:password])
-    fail Errors::UnauthorizedError if account.blank?
+    fail Errors::UnauthorizedError, 'ユーザーネームまたはパスワードが正しくありません' if account.blank?
 
     render json: account, serializer: AccountWithTokenSerializer
   end

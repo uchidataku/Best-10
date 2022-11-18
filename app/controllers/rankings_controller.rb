@@ -17,6 +17,8 @@ class RankingsController < ApplicationController
   end
 
   def create
+    fail Errors::UnauthorizedError, 'ログインしてください' unless current_account
+
     @ranking = Ranking.create!(resource_params.merge(creator: current_account))
     render json: @ranking, status: :created
   end
