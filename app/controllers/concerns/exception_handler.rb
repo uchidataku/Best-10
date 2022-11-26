@@ -6,6 +6,7 @@ module ExceptionHandler
     # 500
     rescue_from StandardError do |e|
       Rails.logger.fatal e.full_message
+      Sentry.capture_exception(e)
       json_response(
         { errors: [{ description: e.message, status: 500, error_code: nil }] }, :internal_server_error
       )
