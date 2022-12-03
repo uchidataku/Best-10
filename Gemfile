@@ -19,6 +19,8 @@ gem 'niceql', '~> 0.1.25'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
+gem 'sentry-rails'
+gem 'sentry-ruby'
 gem 'tzinfo-data'
 
 group :development, :test do
