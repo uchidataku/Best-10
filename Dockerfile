@@ -4,7 +4,8 @@ FROM ruby:2.7.6
 ENV LANG C.UTF-8
 RUN apt-get update -qq && \
     apt-get install -y \
-    build-essential
+    build-essential \
+    libpq-dev
 
 ENV APP_ROOT /app
 WORKDIR ${APP_ROOT}
