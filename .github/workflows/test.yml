@@ -2,6 +2,8 @@ name: Test
 
 on:
   push:
+    branches:
+      - develop
 
 env:
   LANG: C.UTF-8
