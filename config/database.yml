@@ -18,4 +18,3 @@ test:
 production:
   <<: *default
   database: best-10_production
-  password: <%= ENV['PRODUCTION_DATABASE_PASSWORD'] %>
