@@ -9,7 +9,7 @@ RSpec.describe GenreCategoriesController, type: :request do
       request
       expect(response).to have_http_status(:ok)
       parsed_body = JSON.parse(response.body)
-      expect(parsed_body['genre_categories'].count).to eq 17
+      expect(parsed_body['genre_categories'].count).to eq 18
     end
   end
 end
