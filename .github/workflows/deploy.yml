@@ -169,7 +169,7 @@ jobs:
         shell: bash --noprofile --norc -o pipefail {0}
         run: |
           timeout 240 kubectl run \
-            -n best-10-369906-${PROJECT_ENV} \
+            -n best-10-${PROJECT_ENV} \
             -i --rm --restart=Never \
             --image=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
             --overrides="{ \"spec\": { \"containers\": [ { \"name\": \"best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7}\", \"image\": \"gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest\", \"command\": [\"rails\", \"db:migrate\"], \"envFrom\": [ { \"configMapRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-config\" } }, { \"secretRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-secret\" } } ] } ] } }" \
