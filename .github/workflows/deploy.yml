@@ -8,6 +8,7 @@ on:
 env:
   LANG: C.UTF-8
   RAILS_ENV: test
+  USE_GKE_GCLOUD_AUTH_PLUGIN: True
 
 jobs:
   rubocop:
@@ -140,14 +141,24 @@ jobs:
           )" >> $GITHUB_ENV
 
       - name: Sign in to GCP
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: best-10-369906
 
-      - name: Setup GCP
-        run: |
-          gcloud config set project best-10-369906
-          gcloud container clusters get-credentials best-10-369906-cluster --zone asia-northeast1-a
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: best-10-369906-cluster
+          location: asia-northeast1-a
+          credentials: ${{ secrets.GCP_SA_KEY }}
+
+#      - name: Setup GCP
+#        run: |
+#          gcloud config set project best-10-369906
+#          gcloud container clusters get-credentials best-10-369906-cluster --zone asia-northeast1-a
 
       - name: Deployment
         shell: bash
