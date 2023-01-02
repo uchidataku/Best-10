@@ -201,7 +201,7 @@ jobs:
           export TIMEOUT_STATUS=$?
 
           if [ $(kubectl -n best-10-${PROJECT_ENV} get pods | grep best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7} | wc -l) -ge 1 ]; then
-            kubectl -n best-10-${PROJECT_ENV} delete pod best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7}
+            kubectl -n best-10-${PROJECT_ENV} delete pod best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7}
             exit 0
           fi
 
