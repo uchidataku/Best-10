@@ -19,4 +19,6 @@ Rails.application.routes.draw do
   resources :accounts, only: :show
 
   resources :genre_categories, only: :index
+
+  resources :genres, only: :show
 end
