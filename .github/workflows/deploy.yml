@@ -1,0 +1,211 @@
+name: Test and deploy
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  LANG: C.UTF-8
+  RAILS_ENV: test
+  USE_GKE_GCLOUD_AUTH_PLUGIN: True
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    container: ruby:2.7.6
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+
+      - name: Bundle install
+        run: |
+          gem install bundler
+          bundle install --clean --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Rubocop
+        run: bundle exec rubocop
+
+  rspec:
+    runs-on: ubuntu-latest
+    container: ruby:2.7.6
+
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: deploy
+          POSTGRES_PASSWORD: password
+
+    env:
+      DATABASE_HOST: postgres
+      DATABASE_NAME: best-10_test
+      DATABASE_USERNAME: deploy
+      DATABASE_PASSWORD: password
+      APP_HOST: example.com
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      DEFAULT_ADMIN_EMAIL: admin@example.com
+      DEFAULT_ADMIN_PASSWORD: password
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+
+      - name: Bundle install
+        run: |
+          gem install bundler
+          bundle install --clean --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Set up database
+        run: bundle exec rails db:setup
+
+      - name: Rspec
+        run: bundle exec rspec
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [rubocop, rspec]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+
+      - name: Set environment
+        shell: bash
+        run: |
+          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "PROJECT_ENV=$(
+            case ${BRANCH_NAME} in
+              'master' ) echo 'prd' ;;
+              'develop' ) echo 'dev' ;;
+              * ) echo 'dev' ;;
+            esac
+          )" >> $GITHUB_ENV
+
+      - name: Sign in to GCP
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup docker credentials
+        run: gcloud auth configure-docker
+
+      - name: Docker build
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build . \
+            --cache-from=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
+            -f "Dockerfile$(if [ ! $PROJECT_ENV = 'dev' ]; then echo ".prd"; fi)" \
+            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
+            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:${GITHUB_SHA}
+
+      - name: Docker push
+        run: docker push gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app --all-tags
+
+  kubernetes:
+    runs-on: ubuntu-latest
+    needs: [docker, rubocop, rspec]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+
+      - name: Set environment
+        shell: bash
+        run: |
+          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "PROJECT_ENV=$(
+            case ${BRANCH_NAME} in
+              'master' ) echo 'prd' ;;
+              'develop' ) echo 'dev' ;;
+              * ) echo 'dev' ;;
+            esac
+          )" >> $GITHUB_ENV
+
+      - name: Sign in to GCP
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: best-10-369906
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: best-10-369906-cluster
+          location: asia-northeast1-a
+          credentials: ${{ secrets.GCP_SA_KEY }}
+
+#      - name: Setup GCP
+#        run: |
+#          gcloud config set project best-10-369906
+#          gcloud container clusters get-credentials best-10-369906-cluster --zone asia-northeast1-a
+
+      - name: Deployment
+        shell: bash
+        run: kubectl --namespace best-10-${PROJECT_ENV} rollout restart deployment
+
+      - name: Migration
+        id: migration
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          timeout 240 kubectl run \
+            -n best-10-${PROJECT_ENV} \
+            -i --rm --restart=Never \
+            --image=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
+            --overrides="{ \"spec\": { \"containers\": [ { \"name\": \"best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7}\", \"image\": \"gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest\", \"command\": [\"rails\", \"db:migrate\"], \"envFrom\": [ { \"configMapRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-config\" } }, { \"secretRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-secret\" } } ] } ] } }" \
+            best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7}
+
+          export TIMEOUT_STATUS=$?
+
+          if [ $(kubectl -n best-10-${PROJECT_ENV} get pods | grep best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7} | wc -l) -ge 1 ]; then
+            kubectl -n best-10-${PROJECT_ENV} delete pod best-10-369906-${PROJECT_ENV}-db-migration-${GITHUB_SHA::7}
+            exit 0
+          fi
+
+          if [ "$TIMEOUT_STATUS" -eq 124 ]; then
+            echo 'Execution timeout.'
+            exit 124
+          fi
+
+      - name: Seed
+        id: seed
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          timeout 240 kubectl run \
+            -n best-10-${PROJECT_ENV} \
+            -i --rm --restart=Never \
+            --image=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
+            --overrides="{ \"spec\": { \"containers\": [ { \"name\": \"best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7}\", \"image\": \"gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest\", \"command\": [\"rails\", \"db:seed\"], \"envFrom\": [ { \"configMapRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-config\" } }, { \"secretRef\": { \"name\": \"best-10-369906-${PROJECT_ENV}-app-secret\" } } ] } ] } }" \
+            best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7}
+
+          export TIMEOUT_STATUS=$?
+
+          if [ $(kubectl -n best-10-${PROJECT_ENV} get pods | grep best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7} | wc -l) -ge 1 ]; then
+            kubectl -n best-10-${PROJECT_ENV} delete pod best-10-369906-${PROJECT_ENV}-db-seed-${GITHUB_SHA::7}
+            exit 0
+          fi
+
+          if [ "$TIMEOUT_STATUS" -eq 124 ]; then
+            echo 'Execution timeout.'
+            exit 124
+          fi

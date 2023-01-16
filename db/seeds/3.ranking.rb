@@ -73,7 +73,7 @@ Like.import likes
 ## 動物
 ranking = Ranking.find_or_create_by!(title: '好きな動物', creator: admin_account)
 RankingGenre.find_or_create_by!(
-  ranking: ranking, genre: Genre.find_by(name: '動物全般')
+  ranking: ranking, genre: Genre.find_by(name: 'その他動物')
 )
 
 names = %w[
@@ -92,7 +92,7 @@ Like.import likes
 
 ## 大学
 ranking = Ranking.find_or_create_by!(title: 'おすすめ私立大学', creator: admin_account)
-[Genre.find_by!(name: '大学・大学院'), Genre.find_by!(name: '教育全般')].each do |genre|
+[Genre.find_by!(name: '大学・大学院'), Genre.find_by!(name: '教育')].each do |genre|
   RankingGenre.find_or_create_by!(ranking: ranking, genre: genre)
 end
 
@@ -139,7 +139,7 @@ Like.import likes
 ## 料理
 ranking = Ranking.find_or_create_by!(title: '自信のある手料理', creator: admin_account)
 RankingGenre.find_or_create_by!(
-  ranking: ranking, genre: Genre.find_by(name: 'グルメ/料理全般')
+  ranking: ranking, genre: Genre.find_by(name: 'その他グルメ・料理')
 )
 
 names = %w[
