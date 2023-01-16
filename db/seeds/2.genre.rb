@@ -1,5 +1,5 @@
-# # frozen_string_literal: true
-#
+# frozen_string_literal: true
+
 # genre_categories = [
 #   { name: 'エンタメ・趣味', genres: %w[
 #     芸能
