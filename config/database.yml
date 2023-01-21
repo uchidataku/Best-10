@@ -17,4 +17,4 @@ test:
 
 production:
   <<: *default
-  database: best-10_production
+  database: best-10-production
