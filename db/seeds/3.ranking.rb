@@ -1,5 +1,5 @@
-# # frozen_string_literal: true
-#
+# frozen_string_literal: true
+
 # return unless Rails.env.development?
 #
 # admin_account = Account.find_by(is_system_admin: true)
