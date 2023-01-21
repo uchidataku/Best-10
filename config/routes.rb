@@ -20,5 +20,10 @@ Rails.application.routes.draw do
 
   resources :genre_categories, only: :index
 
-  resources :genres, only: :show
+  resources :genres, only: :show do
+    member do
+      post :follow
+      delete :unfollow
+    end
+  end
 end
