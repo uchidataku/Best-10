@@ -6,6 +6,14 @@ class ItemsController < ApplicationController
     render json: @item, status: :created
   end
 
+  def update
+
+  end
+
+  def destroy
+
+  end
+
   private
 
   def resource_params
