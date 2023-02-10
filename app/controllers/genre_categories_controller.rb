@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # GenreCategoriesController
 class GenreCategoriesController < ApplicationController
-  load_and_authorize_resource :genre_categories
+  load_resource :genre_category
 
   def index
     render json: @genre_categories

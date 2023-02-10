@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   attr_reader :current_account
 
   def current_ability
-    @current_ability ||= Ability.new(current_account)
+    @current_ability ||= current_account ? Ability.new(current_account) : Ability.new
   end
 
   private
