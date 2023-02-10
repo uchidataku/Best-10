@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 # RankingsController
 class RankingsController < ApplicationController
+  load_resource :ranking, only: %i[index show]
+  load_and_authorize_resource :ranking, only: :create
+
   def index
-    @rankings = Ranking.all
     @rankings = @rankings.with_keyword(params[:keyword]) if params[:keyword]
     @rankings = @rankings.with_genre(params[:genre_ids]) if params[:genre_ids]
     @rankings = @rankings.sort_by_params(params[:sort_by]) if params[:sort_by]
@@ -12,14 +14,12 @@ class RankingsController < ApplicationController
   end
 
   def show
-    @ranking = Ranking.find(params[:id])
     render json: @ranking, include: %i[creator items genres]
   end
 
   def create
-    fail Errors::UnauthorizedError, 'ログインしてください' unless current_account
-
-    @ranking = Ranking.create!(resource_params.merge(creator: current_account))
+    @ranking.creator = current_account
+    @ranking.save!
     render json: @ranking, status: :created
   end
 

@@ -10,6 +10,10 @@ class ApplicationController < ActionController::API
 
   attr_reader :current_account
 
+  def current_ability
+    @current_ability ||= Ability.new(current_account)
+  end
+
   private
 
   def authenticate_account!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_19_004957) do
+ActiveRecord::Schema.define(version: 2023_02_10_002816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 2023_01_19_004957) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count", comment: "Likes数"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_items_on_account_id"
     t.index ["name", "ranking_id"], name: "index_items_on_name_and_ranking_id", unique: true
     t.index ["ranking_id"], name: "index_items_on_ranking_id"
   end
@@ -100,6 +102,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_004957) do
   add_foreign_key "genre_followings", "accounts", on_delete: :cascade
   add_foreign_key "genre_followings", "genres", on_delete: :cascade
   add_foreign_key "genres", "genre_categories", on_delete: :cascade
+  add_foreign_key "items", "accounts", on_delete: :cascade
   add_foreign_key "items", "rankings", on_delete: :cascade
   add_foreign_key "likes", "accounts", on_delete: :cascade
   add_foreign_key "likes", "items", on_delete: :cascade

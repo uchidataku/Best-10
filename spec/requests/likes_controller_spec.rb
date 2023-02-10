@@ -18,11 +18,24 @@ RSpec.describe LikesController, type: :request do
   describe 'DELETE /items/:item_id/likes' do
     subject(:request) { delete item_likes_path(item.id), headers: headers }
     let!(:item) { create(:item) }
-    let!(:like) { create(:like, item: item, account: account) }
+    let!(:like) { create(:like, item: item, account: target_account) }
 
-    it 'Likeを削除できる' do
-      expect { request }.to change(Like, :count).by(-1)
-      expect(response).to have_http_status(:no_content)
+    context '自分のLike' do
+      let(:target_account) { account }
+
+      it 'Likeを削除できる' do
+        expect { request }.to change(Like, :count).by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context '他人のLike' do
+      let(:target_account) { create(:account) }
+
+      it 'そもそも見つからない' do
+        request
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
 end

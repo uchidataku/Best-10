@@ -10,7 +10,7 @@ RSpec.describe GenresController, type: :request do
     let(:genre) { Genre.find_by(name: '芸能') }
 
     it 'ジャンルをフォローできる' do
-      expect{ request }.to change(GenreFollowing, :count).by(+1)
+      expect { request }.to change(GenreFollowing, :count).by(+1)
       expect(response).to have_http_status(:ok)
     end
   end
@@ -21,7 +21,7 @@ RSpec.describe GenresController, type: :request do
     let!(:genre_following) { create(:genre_following, account: account, genre: genre) }
 
     it 'ジャンルをアンフォローできる' do
-      expect{ request }.to change(GenreFollowing, :count).by(-1)
+      expect { request }.to change(GenreFollowing, :count).by(-1)
       expect(response).to have_http_status(:no_content)
     end
   end

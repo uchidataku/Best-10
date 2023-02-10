@@ -65,46 +65,46 @@ jobs:
       - name: Rspec
         run: bundle exec rspec
 
-  docker:
-    runs-on: ubuntu-latest
-    needs: [rubocop, rspec]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.5
-
-      - name: Set environment
-        shell: bash
-        run: |
-          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          echo "PROJECT_ENV=$(
-            case ${BRANCH_NAME} in
-              'master' ) echo 'prd' ;;
-              'develop' ) echo 'dev' ;;
-              * ) echo 'dev' ;;
-            esac
-          )" >> $GITHUB_ENV
-
-      - name: Sign in to GCP
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Setup docker credentials
-        run: gcloud auth configure-docker
-
-      - name: Docker build
-        env:
-          DOCKER_BUILDKIT: 1
-        run: |
-          docker build . \
-            --cache-from=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
-            -f "Dockerfile$(if [ ! $PROJECT_ENV = 'dev' ]; then echo ".prd"; fi)" \
-            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
-            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:${GITHUB_SHA}
-
-      - name: Docker push
-        run: docker push gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app --all-tags
+#  docker:
+#    runs-on: ubuntu-latest
+#    needs: [rubocop, rspec]
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2.3.5
+#
+#      - name: Set environment
+#        shell: bash
+#        run: |
+#          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
+#          echo "PROJECT_ENV=$(
+#            case ${BRANCH_NAME} in
+#              'master' ) echo 'prd' ;;
+#              'develop' ) echo 'dev' ;;
+#              * ) echo 'dev' ;;
+#            esac
+#          )" >> $GITHUB_ENV
+#
+#      - name: Sign in to GCP
+#        uses: google-github-actions/setup-gcloud@v0
+#        with:
+#          service_account_key: ${{ secrets.GCP_SA_KEY }}
+#
+#      - name: Setup docker credentials
+#        run: gcloud auth configure-docker
+#
+#      - name: Docker build
+#        env:
+#          DOCKER_BUILDKIT: 1
+#        run: |
+#          docker build . \
+#            --cache-from=gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
+#            -f "Dockerfile$(if [ ! $PROJECT_ENV = 'dev' ]; then echo ".prd"; fi)" \
+#            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:latest \
+#            -t gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app:${GITHUB_SHA}
+#
+#      - name: Docker push
+#        run: docker push gcr.io/best-10-369906/best-10-369906-${PROJECT_ENV}/app --all-tags
 
 #  kubernetes:
 #    runs-on: ubuntu-latest
