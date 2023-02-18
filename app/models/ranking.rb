@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # Ranking
 class Ranking < ApplicationRecord
-  before_create :set_suffix_title
+  before_save :set_suffix_title
 
   # Associations
   belongs_to :creator, class_name: 'Account'

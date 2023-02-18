@@ -12,6 +12,7 @@ class Ability
     can :manage, GenreFollowing, account: account
     can %i[read create], Item
     can :manage, Item, account: account
+    can :manage, Item, ranking_id: account.ranking_ids
     can %i[read create], Like
     can :manage, Like, account: account
     can %i[read create], Ranking
