@@ -14,4 +14,8 @@ class Account < ApplicationRecord
   validates :username, uniqueness: true, presence: true
   validates :password, length: { minimum: 6 }
   validates :is_system_admin, inclusion: [true, false]
+
+  def admin?
+    is_system_admin == true
+  end
 end

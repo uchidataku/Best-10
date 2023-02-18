@@ -6,7 +6,7 @@ RSpec.describe RankingsController, type: :request do
 
   describe 'GET /rankings' do
     subject(:request) { get rankings_path, headers: headers, params: params }
-    let!(:ranking_1) { create(:ranking, title: '好きな漫画') }
+    let!(:ranking_1) { create(:ranking, title: '好きな漫画', creator: account) }
     let!(:ranking_2) { create(:ranking, title: 'おすすめ洋画') }
     let!(:ranking_3) { create(:ranking, title: '好きなプログラミング言語') }
     let(:manga) { Genre.find_by!(name: '漫画') }

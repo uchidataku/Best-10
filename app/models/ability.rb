@@ -16,5 +16,13 @@ class Ability
     can :manage, Like, account: account
     can %i[read create], Ranking
     can :manage, Ranking, creator: account
+
+    return unless account.admin?
+
+    can :manage, :all
+  end
+
+  def can?(action, subject, attribute = nil, *extra_args)
+    subject.is_a?(Enumerable) ? subject.map { |a_subject| can?(action, a_subject) }.exclude?(false) : super
   end
 end

@@ -5,10 +5,11 @@ class ApplicationController < ActionController::API
   include EnvelopeRenderer
 
   before_action :authenticate_account!
+  before_action :load_viewer_context!
 
-  serialization_scope :current_account
+  serialization_scope :context
 
-  attr_reader :current_account
+  attr_reader :current_account, :context
 
   def current_ability
     @current_ability ||= current_account ? Ability.new(current_account) : Ability.new
@@ -21,5 +22,9 @@ class ApplicationController < ActionController::API
     return if @current_jwt.blank?
 
     @current_account = Account.authenticate!(@current_jwt)
+  end
+
+  def load_viewer_context!
+    @context = { current_account: current_account, current_ability: current_ability }
   end
 end
