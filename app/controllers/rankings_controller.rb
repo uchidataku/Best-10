@@ -18,6 +18,8 @@ class RankingsController < ApplicationController
   end
 
   def create
+    fail Errors::UnauthorizedError, 'ログインしてください' unless current_account
+
     @ranking.creator = current_account
     @ranking.save!
     render json: @ranking, status: :created

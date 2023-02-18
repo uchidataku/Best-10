@@ -5,6 +5,8 @@ class ItemsController < ApplicationController
   load_and_authorize_resource through: :ranking, shallow: true
 
   def create
+    fail Errors::UnauthorizedError, 'ログインしてください' unless current_account
+
     @item.account = current_account
     @item.save!
     render json: @item, status: :created

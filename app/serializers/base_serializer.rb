@@ -12,10 +12,14 @@ class BaseSerializer < ActiveModel::Serializer
   end
 
   def current_account
+    return nil unless try(:context)
+
     context[:current_account]
   end
 
   def current_ability
+    return nil unless try(:context)
+
     context[:current_ability]
   end
 end
