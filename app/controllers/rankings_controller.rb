@@ -2,7 +2,7 @@
 # RankingsController
 class RankingsController < ApplicationController
   load_resource :ranking, only: %i[index show]
-  load_and_authorize_resource :ranking, only: :create
+  load_and_authorize_resource :ranking, except: %i[index show]
 
   def index
     @rankings = @rankings.with_keyword(params[:keyword]) if params[:keyword]
@@ -23,6 +23,16 @@ class RankingsController < ApplicationController
     @ranking.creator = current_account
     @ranking.save!
     render json: @ranking, status: :created
+  end
+
+  def update
+    @ranking.update!(resource_params)
+    render json: @ranking
+  end
+
+  def destroy
+    @ranking.destroy!
+    head 204
   end
 
   private

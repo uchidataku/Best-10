@@ -175,7 +175,7 @@ RSpec.describe RankingsController, type: :request do
 
       it 'エラー' do
         request
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
@@ -209,6 +209,57 @@ RSpec.describe RankingsController, type: :request do
         expect(response).to have_http_status(:ok)
         parsed_body = JSON.parse(response.body)
         expect(parsed_body['id']).to eq ranking.id
+      end
+    end
+  end
+
+  describe 'PATCH /rankings/:id' do
+    subject(:request) { patch ranking_path(ranking.id), params: params, headers: headers }
+    let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
+    let!(:ranking) { create(:ranking, creator: target_account) }
+    let(:params) { { ranking: { title: 'hogehoge' } } }
+
+    context '自分作成のRanking' do
+      let(:target_account) { account }
+
+      it 'Rankingを更新できる' do
+        request
+        expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['title']).to eq 'hogehoge'
+      end
+    end
+
+    context '他人作成のRanking' do
+      let(:target_account) { create(:account) }
+
+      it 'エラー' do
+        request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe 'DELETE /rankings/:id' do
+    subject(:request) { delete ranking_path(ranking.id), headers: headers }
+    let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
+    let!(:ranking) { create(:ranking, creator: target_account) }
+
+    context '自分作成のRanking' do
+      let(:target_account) { account }
+
+      it 'Rankingを削除できる' do
+        request
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context '他人作成のRanking' do
+      let(:target_account) { create(:account) }
+
+      it 'エラー' do
+        request
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
