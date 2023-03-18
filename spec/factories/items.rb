@@ -4,5 +4,6 @@ FactoryBot.define do
     sequence(:name) { |n| "OnePiece_#{n}" }
 
     association :ranking
+    association :account
   end
 end

@@ -2,6 +2,7 @@
 # Item
 class Item < ApplicationRecord
   belongs_to :ranking, counter_cache: true
+  belongs_to :account
 
   has_many :likes
 

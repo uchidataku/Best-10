@@ -11,6 +11,7 @@ gem 'active_model_serializers', '~> 0.10'
 gem 'activerecord-import', '~> 1.0'
 gem 'bcrypt', '~> 3.1'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'cancancan'
 gem 'config'
 gem 'dotenv-rails'
 gem 'jwt', '~> 2.2'

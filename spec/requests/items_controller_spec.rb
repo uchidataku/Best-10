@@ -15,4 +15,51 @@ RSpec.describe ItemsController, type: :request do
       expect(response).to have_http_status(:created)
     end
   end
+
+  describe 'PATCH /items/:id' do
+    subject(:request) { patch item_path(item.id), params: params, headers: headers }
+    let!(:item) { create(:item, account: target_account) }
+    let(:params) { { item: { name: 'ターミネーター' } } }
+
+    context '自分のItem' do
+      let(:target_account) { account }
+
+      it 'Itemを更新できる' do
+        request
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context '他人のItem' do
+      let(:target_account) { create(:account) }
+
+      it 'Itemを更新できない' do
+        request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe 'DELETE /items/:id' do
+    subject(:request) { delete item_path(item.id), headers: headers }
+    let!(:item) { create(:item, account: target_account) }
+
+    context '自分のItem' do
+      let(:target_account) { account }
+
+      it 'Itemを削除できる' do
+        expect { request }.to change(Item, :count).by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context '他人のItem' do
+      let(:target_account) { create(:account) }
+
+      it 'Itemを削除できない' do
+        request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
 end

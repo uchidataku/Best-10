@@ -17,4 +17,8 @@ test:
 
 production:
   <<: *default
-  database: best-10_production
+  # 一旦herokuにデプロイ
+  database: d8hg36rp7arl80
+  host: ec2-54-173-77-184.compute-1.amazonaws.com
+  username: ocreouuxviqwbo
+  password: <%= ENV['APP_DATABASE_PASSWORD'] %>

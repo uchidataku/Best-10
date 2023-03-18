@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # RankingSerializer
 class RankingSerializer < BaseSerializer
-  attributes :title, :items_count
+  attributes :title, :items_count, :viewer_can_update, :viewer_can_delete
 
   def items_count
     return 0 if object.items_count.nil?

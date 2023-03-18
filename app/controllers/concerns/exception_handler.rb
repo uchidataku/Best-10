@@ -25,6 +25,15 @@ module ExceptionHandler
       )
     end
 
+    # 403
+    rescue_from CanCan::AccessDenied do |e|
+      message = "Not authorized to #{e.action} #{e.subject.is_a?(Class) ? e.subject.name : e.subject.class.name}"
+      message += ":#{e.subject.id}" if e.subject.respond_to?(:id)
+      json_response(
+        { errors: [{ description: message, status: 403, error_code: nil }] }, :forbidden
+      )
+    end
+
     # 404
     rescue_from ActiveRecord::RecordNotFound do |e|
       json_response(

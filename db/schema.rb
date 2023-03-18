@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_12_004923) do
+ActiveRecord::Schema.define(version: 2023_02_10_002816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 2022_11_12_004923) do
     t.index ["name"], name: "index_genre_categories_on_name", unique: true
   end
 
+  create_table "genre_followings", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "ジャンルフォロー", force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "genre_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id", "genre_id"], name: "index_genre_followings_on_account_id_and_genre_id", unique: true
+    t.index ["account_id"], name: "index_genre_followings_on_account_id"
+    t.index ["genre_id"], name: "index_genre_followings_on_genre_id"
+  end
+
   create_table "genres", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "ジャンル", force: :cascade do |t|
     t.string "name", null: false, comment: "ジャンル名"
     t.uuid "genre_category_id"
@@ -47,6 +57,8 @@ ActiveRecord::Schema.define(version: 2022_11_12_004923) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count", comment: "Likes数"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_items_on_account_id"
     t.index ["name", "ranking_id"], name: "index_items_on_name_and_ranking_id", unique: true
     t.index ["ranking_id"], name: "index_items_on_ranking_id"
   end
@@ -87,7 +99,10 @@ ActiveRecord::Schema.define(version: 2022_11_12_004923) do
     t.index ["title"], name: "index_rankings_on_title", unique: true
   end
 
+  add_foreign_key "genre_followings", "accounts", on_delete: :cascade
+  add_foreign_key "genre_followings", "genres", on_delete: :cascade
   add_foreign_key "genres", "genre_categories", on_delete: :cascade
+  add_foreign_key "items", "accounts", on_delete: :cascade
   add_foreign_key "items", "rankings", on_delete: :cascade
   add_foreign_key "likes", "accounts", on_delete: :cascade
   add_foreign_key "likes", "items", on_delete: :cascade

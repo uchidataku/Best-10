@@ -5,6 +5,7 @@ RSpec.describe AuthController, type: :request do
   describe 'POST /sign_in' do
     subject(:request) { post sign_in_path, params: params }
     let!(:account) { create(:account, username: 'hoge') }
+    let!(:ranking) { create(:ranking, creator: account) }
 
     context 'valid' do
       let(:params) { { account: { username: 'hoge', password: 'password' } } }
