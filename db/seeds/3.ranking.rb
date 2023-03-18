@@ -21,7 +21,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -42,7 +42,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -63,7 +63,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -83,7 +83,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -103,7 +103,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -129,7 +129,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
@@ -149,7 +149,7 @@ names = %w[
 
 likes = []
 names.each do |name|
-  item = Item.find_or_create_by!(name: name, ranking: ranking)
+  item = Item.find_or_create_by!(name: name, ranking: ranking, account: admin_account)
   rand(1..100).times.each do |n|
     likes << Like.new(item: item, account: Account.find_by(username: "testuser_#{n}"))
   end
