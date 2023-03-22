@@ -5,6 +5,18 @@ RSpec.describe GenresController, type: :request do
   let(:account) { create(:account) }
   let(:headers) { { Authorization: "Bearer #{account.jwt}" } }
 
+  describe 'GET /genres/:id' do
+    subject(:request) { get genre_path(genre.id), headers: headers }
+    let(:genre) { Genre.find_by(name: '芸能') }
+
+    it 'ジャンルを取得できる' do
+      request
+      expect(response).to have_http_status(:ok)
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['id']).to eq genre.id
+    end
+  end
+
   describe 'POST /genres/:id/follow' do
     subject(:request) { post follow_genre_path(genre.id), headers: headers }
     let(:genre) { Genre.find_by(name: '芸能') }

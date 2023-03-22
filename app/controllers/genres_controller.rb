@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # GenresController
 class GenresController < ApplicationController
+  load_and_authorize_resource :genre, only: :show
+
   def show
     render json: @genre
   end
