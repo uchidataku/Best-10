@@ -5,5 +5,15 @@ FactoryBot.define do
 
     association :ranking
     association :account
+
+    trait :with_image do
+      after(:build) do |item|
+        item.image.attach(
+          io: File.open('spec/fixtures/example.jpg'),
+          filename: 'example.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
   end
 end

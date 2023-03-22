@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # ItemSerializer
 class ItemSerializer < BaseSerializer
-  attributes :name, :likes_count, :viewer_can_update, :viewer_can_delete
+  attributes :name, :description, :likes_count, :viewer_can_update, :viewer_can_delete, :image_url
 
   def likes_count
     return 0 if object.likes_count.nil?

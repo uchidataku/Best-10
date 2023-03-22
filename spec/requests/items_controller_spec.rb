@@ -7,7 +7,7 @@ RSpec.describe ItemsController, type: :request do
 
   describe 'POST /rankings/:ranking_id/items' do
     subject(:request) { post ranking_items_path(ranking.id), params: params, headers: headers }
-    let(:params) { { item: { name: 'ターミネーター' } } }
+    let(:params) { { item: { name: 'ターミネーター', description: 'ハリウッド映画' } } }
     let!(:ranking) { create(:ranking) }
 
     it 'Itemを作成できる' do
@@ -18,8 +18,8 @@ RSpec.describe ItemsController, type: :request do
 
   describe 'PATCH /items/:id' do
     subject(:request) { patch item_path(item.id), params: params, headers: headers }
-    let!(:item) { create(:item, account: target_account) }
-    let(:params) { { item: { name: 'ターミネーター' } } }
+    let!(:item) { create(:item, :with_image, account: target_account) }
+    let(:params) { { item: { name: 'ターミネーター', description: 'ハリウッド映画' } } }
 
     context '自分のItem' do
       let(:target_account) { account }
@@ -27,6 +27,8 @@ RSpec.describe ItemsController, type: :request do
       it 'Itemを更新できる' do
         request
         expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['name']).to eq 'ターミネーター'
       end
     end
 

@@ -6,5 +6,11 @@ class Item < ApplicationRecord
 
   has_many :likes
 
+  has_one_attached :image
+
   validates :name, presence: true, uniqueness: { scope: :ranking_id }
+
+  def image_url
+    url_for(image)
+  end
 end
